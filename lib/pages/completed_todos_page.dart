@@ -1,30 +1,24 @@
-// completed_todos_page.dart
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controllers/todo_controller.dart';
 
 class CompletedTodosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('todos')
-          .where('isCompleted', isEqualTo: true)
-          .orderBy('cretedAt', descending: true)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-          final todos = snapshot.data!.docs;
+    final TodoController todoController = Get.find();
 
-          return ListView.builder(itemBuilder: (context, index) {
-            final todo = todos[index].data() as Map<String, dynamic>;
-            return ListTile(
-              title: Text(todo['title']),
-            );
-          },);
-      },
-    );
+    return Obx(() {
+      return ListView.builder(
+        itemCount: todoController.filteredCompletedTodos.length,
+        itemBuilder: (context, index) {
+          var todo = todoController.filteredCompletedTodos[index];
+          return ListTile(
+            title: Text(todo['content']),
+            subtitle: Text(todo['createdAt'].toDate().toString()),
+          );
+        },
+      );
+    });
   }
 }
+
