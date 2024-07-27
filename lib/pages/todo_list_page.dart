@@ -1,81 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:todo_task_app/pages/todo_form_page.dart';
+import '../controllers/todo_controller.dart';
 
-class TodoListPage extends StatefulWidget {
-  @override
-  _TodoListPageState createState() => _TodoListPageState();
-}
-
-class _TodoListPageState extends State<TodoListPage> {
-  final searchController = TextEditingController();
-  String searchQuery = '';
-
+class TodoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final TodoController todoController = Get.find();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todo Listesi'),
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                hintText: 'Ara...',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
-            ),
+        title: Text('Todo List'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => Get.to(() => TodoFormPage()),
           ),
-        ),
+        ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('todos')
-            .where('title', isGreaterThanOrEqualTo: searchQuery)
-            .where('title', isLessThanOrEqualTo: searchQuery + '\uf8ff')
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          final todos = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: todos.length,
-            itemBuilder: (context, index) {
-              final todo = todos[index];
-              return ListTile(
-                title: Text(todo['title']),
-                trailing: Checkbox(
-                  value: todo['completed'],
-                  onChanged: (value) {
-                    FirebaseFirestore.instance
-                        .collection('todos')
-                        .doc(todo.id)
-                        .update({'completed': value});
+      body: Obx(() {
+        if (todoController.filteredPendingTodos.isEmpty) {
+          return Center(child: Text('No pending todos'));
+        }
+        return ListView.builder(
+          itemCount: todoController.filteredPendingTodos.length,
+          itemBuilder: (context, index) {
+            var todo = todoController.filteredPendingTodos[index];
+            return Card(
+              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              child: ListTile(
+                title: Text(todo['title'] ?? 'No Title'),
+                trailing: IconButton(
+                  icon: Icon(Icons.check, color: Colors.green),
+                  onPressed: () {
+                    todoController.toggleTodoCompletion(todo.id, true);
                   },
                 ),
-                onTap: () {
-                  Get.toNamed('/todo-form', arguments: todo.id);
+                onLongPress: () {
+                  Get.to(() => TodoFormPage(todoId: todo.id, isUpdate: true));
                 },
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed('/todo-form');
-        },
-        child: Icon(Icons.add),
-      ),
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 }
