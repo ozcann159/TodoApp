@@ -7,6 +7,7 @@ import 'package:todo_task_app/pages/login_page.dart';
 import 'package:todo_task_app/pages/register_page.dart';
 import 'package:todo_task_app/pages/todo_form_page.dart';
 import 'package:todo_task_app/pages/todo_list_page.dart';
+import 'package:todo_task_app/pages/todo_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,13 +28,17 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo Uygulaması',
-      initialRoute: isLoggedIn ? '/home' : '/login',
+      initialRoute: isLoggedIn ? '/todo-page' : '/login',
       getPages: [
         GetPage(name: '/login', page: () => LoginPage()),
         GetPage(name: '/register', page: () => RegisterPage()),
+        GetPage(name: '/todo-page', page: () => TodoPage()),
         GetPage(name: '/home', page: () => HomePage()),
         GetPage(name: '/todo-list', page: () => TodoListPage()),
-        GetPage(name: '/todo-form', page: () => TodoFormPage()),
+        GetPage(
+          name: '/todo-form',
+          page: () => TodoFormPage(todoId: null, isUpdate: false),
+        ),
       ],
     );
   }
