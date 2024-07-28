@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_task_app/const/color.dart';
@@ -18,6 +19,15 @@ class TodoPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Get.offAllNamed('/login');
+              },
+            ),
+          ],
           title: const Text('Yapılacaklar'),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(100.0),
@@ -67,7 +77,7 @@ class TodoPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Get.to(() => TodoFormPage());
+            Get.to(() => TodoFormPage(todoId: null, isUpdate: false));
           },
           tooltip: 'Todo Ekle',
           child: Icon(Icons.add),
