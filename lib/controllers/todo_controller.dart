@@ -1,80 +1,77 @@
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class TodoController extends GetxController {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var todos = <DocumentSnapshot>[].obs;
+  var searchQuery = ''.obs;
 
-  var searchQuery = ''.obs; // Arama sorgusunu tutacak reaktif değişken
-
-  RxList<DocumentSnapshot> todos = <DocumentSnapshot>[].obs; // Tüm todo'ları tutacak liste
-
-  
   @override
   void onInit() {
     super.onInit();
     fetchTodos();
   }
 
-  void fetchTodos() async {
-    // Todo'ları Firestore'dan çek
-    final todoCollection = _firestore.collection('todos');
-    todoCollection.snapshots().listen((snapshot) {
-      todos.value = snapshot.docs;
-    });
-  }
-
-   List<DocumentSnapshot> get filteredPendingTodos {
-    // Arama sorgusuna göre filtrelenmiş tamamlanmamış todo'lar
-    return todos.where((todo) {
-      final title = todo['title']?.toString() ?? '';
-      final isCompleted = todo['completed'] ?? false;
-      return !isCompleted && title.toLowerCase().contains(searchQuery.value.toLowerCase());
-    }).toList();
-  }
-
-  List<DocumentSnapshot> get filteredCompletedTodos {
-    // Arama sorgusuna göre filtrelenmiş tamamlanmış todo'lar
-    return todos.where((todo) {
-      final title = todo['title']?.toString() ?? '';
-      final isCompleted = todo['completed'] ?? false;
-      return isCompleted && title.toLowerCase().contains(searchQuery.value.toLowerCase());
-    }).toList();
-  }
-
-  // Arama fonksiyonu
-  List<DocumentSnapshot> get filteredTodos {
-    if (searchQuery.value.isEmpty) {
-      return todos;
-    } else {
-      return todos.where((todo) {
-        final title = todo['title']?.toString() ?? '';
-        return title.toLowerCase().contains(searchQuery.value.toLowerCase());
-      }).toList();
+  void fetchTodos() {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      FirebaseFirestore.instance
+          .collection('todos')
+          .doc(userId)
+          .collection('userTodos')
+          .orderBy('createdAt', descending: true)
+          .snapshots()
+          .listen((snapshot) {
+        todos.value = snapshot.docs;
+      });
     }
   }
 
-  // Todo'nun tamamlanmasını değiştiren metot
-  void toggleTodoCompletion(String id, bool isCompleted) async {
-    await _firestore.collection('todos').doc(id).update({'completed': isCompleted});
+  List<DocumentSnapshot> get filteredPendingTodos {
+    if (searchQuery.isEmpty) {
+      return todos.where((todo) => !(todo['completed'] ?? false)).toList();
+    } else {
+      return todos.where((todo) =>
+          !(todo['completed'] ?? false) &&
+          (todo['description']?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
+      ).toList();
+    }
   }
 
-  // Todo ekleme
-  Future<void> addTodo(Map<String, dynamic> todoData) async {
-    await _firestore.collection('todos').add(todoData);
+  List<DocumentSnapshot> get filteredCompletedTodos {
+    if (searchQuery.isEmpty) {
+      return todos.where((todo) => todo['completed'] ?? false).toList();
+    } else {
+      return todos.where((todo) =>
+          (todo['completed'] ?? false) &&
+          (todo['description']?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
+      ).toList();
+    }
   }
 
-  // Todo güncelleme
-  Future<void> updateTodo(String todoId, Map<String, dynamic> updatedData) async {
-    await _firestore.collection('todos').doc(todoId).update(updatedData);
-  }
-
-  // Todo silme
   Future<void> deleteTodo(String todoId) async {
-    await _firestore.collection('todos').doc(todoId).delete();
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      await FirebaseFirestore.instance
+          .collection('todos')
+          .doc(userId)
+          .collection('userTodos')
+          .doc(todoId)
+          .delete();
+      // fetchTodos(); // snapshots methoduyla gerek kalmıyor
+    }
   }
 
-  // Todo'ları alma
-  Future<DocumentSnapshot> getTodoById(String todoId) async {
-    return await _firestore.collection('todos').doc(todoId).get();
+  Future<void> toggleTodoCompletion(String todoId, bool completed) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      await FirebaseFirestore.instance
+          .collection('todos')
+          .doc(userId)
+          .collection('userTodos')
+          .doc(todoId)
+          .update({'completed': completed});
+      // fetchTodos(); // snapshots methoduyla gerek kalmıyor
+    }
   }
 }
