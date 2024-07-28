@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_task_app/pages/todo_form_page.dart';
+
 import '../controllers/todo_controller.dart';
 
 class PendingTodosPage extends StatelessWidget {
@@ -9,16 +10,19 @@ class PendingTodosPage extends StatelessWidget {
     final TodoController todoController = Get.find();
 
     return Obx(() {
+      final todos = todoController.filteredPendingTodos;
+      if (todos.isEmpty) {
+        return Center(child: Text('No pending todos'));
+      }
       return ListView.builder(
-        itemCount: todoController.filteredPendingTodos.length,
+        itemCount: todos.length,
         itemBuilder: (context, index) {
-          var todo = todoController.filteredPendingTodos[index];
+          var todo = todos[index];
 
           return Dismissible(
-            key: Key(todo.id), // Her item için unique bir key kullanmalısınız
+            key: Key(todo.id),
             onDismissed: (direction) {
               if (direction == DismissDirection.endToStart) {
-                // Silme işlemi
                 todoController.deleteTodo(todo.id);
               }
             },
@@ -36,15 +40,28 @@ class PendingTodosPage extends StatelessWidget {
               elevation: 4,
               margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: ListTile(
-                leading: todo['completed']
-                    ? Icon(Icons.check_circle, color: Colors.green)
-                    : Icon(Icons.circle_outlined),
+                leading: GestureDetector(
+                  onTap: () {
+                    todoController.toggleTodoCompletion(todo.id, true);
+                  },
+                  child: todo['completed']
+                      ? Icon(Icons.check_circle, color: Colors.green)
+                      : Icon(Icons.circle_outlined),
+                ),
                 title: Text(todo['title'] ?? 'Başlık Yok'),
-                subtitle: Text(todo['createdAt']?.toDate().toString() ?? 'Tarih Yok'),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(todo['description'] ?? 'Açıklama Yok'),
+                    Text(
+                      todo['createdAt']?.toDate().toString() ?? 'Tarih Yok',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ),
                 trailing: IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    // Güncelleme sayfasına geçiş
                     Get.to(() => TodoFormPage(todoId: todo.id, isUpdate: true));
                   },
                 ),
