@@ -14,7 +14,7 @@ class TodoListPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () => Get.to(() => TodoFormPage()),
+            onPressed: () => Get.to(() => TodoFormPage(todoId: null, isUpdate: false)),
           ),
         ],
       ),
