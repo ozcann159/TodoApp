@@ -1,61 +1,121 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import '../controllers/todo_controller.dart';
 
-class TodoFormPage extends StatelessWidget {
+class TodoFormPage extends StatefulWidget {
   final String? todoId;
   final bool isUpdate;
 
-  TodoFormPage({this.todoId, this.isUpdate = false});
+  TodoFormPage({this.todoId, required this.isUpdate});
+
+  @override
+  _TodoFormPageState createState() => _TodoFormPageState();
+}
+
+class _TodoFormPageState extends State<TodoFormPage> {
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isUpdate && widget.todoId != null) {
+      _loadTodoData();
+    }
+  }
+
+  Future<void> _loadTodoData() async {
+    DocumentSnapshot todo = await FirebaseFirestore.instance
+        .collection('todos')
+        .doc(user!.uid)
+        .collection('userTodos')
+        .doc(widget.todoId)
+        .get();
+
+    Map<String, dynamic>? data = todo.data() as Map<String, dynamic>?;
+    if (data != null) {
+      titleController.text = data['title'] ?? '';
+      descriptionController.text = data['description'] ?? '';
+    }
+  }
+
+  Future<void> _saveTodo() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        if (widget.isUpdate && widget.todoId != null) {
+          // Todo güncelle
+          await FirebaseFirestore.instance
+              .collection('todos')
+              .doc(user!.uid)
+              .collection('userTodos')
+              .doc(widget.todoId)
+              .update({
+            'title': titleController.text,
+            'description': descriptionController.text,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        } else {
+          // Yeni todo ekle
+          await FirebaseFirestore.instance
+              .collection('todos')
+              .doc(user!.uid)
+              .collection('userTodos')
+              .add({
+            'title': titleController.text,
+            'description': descriptionController.text,
+            'completed': false,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        }
+        Get.back();
+      } catch (e) {
+        Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TodoController todoController = Get.find();
-    final TextEditingController titleController = TextEditingController();
-
-    if (isUpdate && todoId != null) {
-      // Todo'yu güncelleme durumunda, ID'ye göre verileri yükleyin
-      todoController.getTodoById(todoId!).then((todo) {
-        titleController.text = todo['title'] ?? '';
-      }).catchError((error) {
-        // Hata işleme
-        print("Error fetching todo: $error");
-      });
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(isUpdate ? 'Update Todo' : 'Add Todo'),
+        title: Text(widget.isUpdate ? 'Todo Güncelle' : 'Yeni Todo Ekle'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                final title = titleController.text.trim();
-                if (title.isNotEmpty) {
-                  if (isUpdate && todoId != null) {
-                    await todoController.updateTodo(todoId!, {'title': title});
-                  } else {
-                    await todoController.addTodo({
-                      'title': title,
-                      'completed': false,
-                      'createdAt': Timestamp.now(),
-                    });
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: 'Başlık'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Başlık gerekli';
                   }
-                  Get.back(); // Geri dön
-                }
-              },
-              child: Text(isUpdate ? 'Update' : 'Add'),
-            ),
-          ],
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Açıklama'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Açıklama gerekli';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveTodo,
+                child: Text(widget.isUpdate ? 'Güncelle' : 'Ekle'),
+              ),
+            ],
+          ),
         ),
       ),
     );
