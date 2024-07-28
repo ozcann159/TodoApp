@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Get.offNamed('/home');
+        Get.offNamed('/todo-page');  // Başarılı girişten sonra yönlendirme
       } on FirebaseAuthException catch (e) {
         Get.snackbar('Error', e.message ?? 'Bir hata oluştu');
       } catch (e) {
