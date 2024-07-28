@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -9,29 +9,35 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
 
-  void register() async {
+  void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
+        // Firebase Authentication ile kullanıcı kaydı
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
         );
-        // Save user details to Firestore
-        await FirebaseFirestore.instance.collection('users').add({
-          'name': nameController.text.trim(),
-          'email': emailController.text.trim(),
-          'createdAt': Timestamp.now(),
+
+        // Kullanıcı Firestore'a eklenecek
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user?.uid)
+            .set({
+          'name': _nameController.text,
+          'createdAt': FieldValue.serverTimestamp(),
         });
-        Get.offNamed('/home');
-      } on FirebaseAuthException catch (e) {
-        Get.snackbar('Error', e.message ?? 'Bir hata oluştu');
+
+        Get.offAllNamed('/todo-page'); // Kayıt sonrası ana sayfaya yönlendirme
       } catch (e) {
-        Get.snackbar('Error', 'Bir hata oluştu');
+        // Hata yönetimi
+        print(e);
+        Get.snackbar('Hata', e.toString());
       }
     }
   }
@@ -41,46 +47,45 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Kayıt Ol')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
-                controller: nameController,
+                controller: _nameController,
                 decoration: InputDecoration(labelText: 'İsim Soyisim'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'İsim soyisim girin';
+                    return 'İsim soyisim gerekli';
                   }
                   return null;
                 },
               ),
               TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'E-posta'),
-                keyboardType: TextInputType.emailAddress,
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
                 validator: (value) {
-                  if (value == null || !value.contains('@')) {
-                    return 'Geçerli bir e-posta girin';
+                  if (value == null || value.isEmpty) {
+                    return 'Email gerekli';
                   }
                   return null;
                 },
               ),
               TextFormField(
-                controller: passwordController,
+                controller: _passwordController,
                 decoration: InputDecoration(labelText: 'Şifre'),
                 obscureText: true,
                 validator: (value) {
-                  if (value == null || value.length < 8) {
-                    return 'Şifre en az 8 karakter olmalıdır';
+                  if (value == null || value.length < 6) {
+                    return 'Şifre en az 6 karakter olmalı';
                   }
                   return null;
                 },
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: register,
+                onPressed: _register,
                 child: Text('Kayıt Ol'),
               ),
             ],
