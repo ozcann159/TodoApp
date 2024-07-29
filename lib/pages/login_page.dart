@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               const SizedBox(height: 50),
@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 50.0),
               Form(
                 key: _formKey,
                 child: Column(

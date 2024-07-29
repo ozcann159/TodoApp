@@ -45,48 +45,110 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Kayıt Ol')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      backgroundColor: const Color(0xFF1d2630),
+      appBar: AppBar(
+        title: Text('Kayıt Ol'),
+        backgroundColor: const Color(0xFF1d2630),
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'İsim Soyisim'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'İsim soyisim gerekli';
-                  }
-                  return null;
-                },
+              SizedBox(height: 50),
+              Text(
+                "Giriş yapabilmek için kayıt olun.",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Email gerekli';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Şifre'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.length < 6) {
-                    return 'Şifre en az 6 karakter olmalı';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _register,
-                child: Text('Kayıt Ol'),
+              SizedBox(height: 50.0),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.account_circle,
+                            color: Colors.white,
+                          ),
+                          labelText: 'İsim Soyisim',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white60),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'İsim soyisim gerekli';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: Colors.white,
+                          ),
+                          labelText: 'E-posta',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white60),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email gerekli';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.password,
+                            color: Colors.white,
+                          ),
+                          labelText: 'Şifre',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white60),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.length < 6) {
+                          return 'Şifre en az 6 karakter olmalı';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      height: 55,
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: ElevatedButton(
+                        onPressed: _register,
+                        child: Text(
+                          'Kayıt Ol',
+                          style: TextStyle(color: Colors.indigo, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
