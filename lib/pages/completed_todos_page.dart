@@ -51,7 +51,31 @@ class CompletedTodosPage extends StatelessWidget {
               trailing: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  Get.to(() => TodoFormPage(todoId: todo.id, isUpdate: true));
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: Container(
+                          width: 300, // Genişlik
+                          height: 400, // Yükseklik
+                          child: TodoFormPage(
+                            todoId: todo.id,
+                            isUpdate: true,
+                          ),
+                        ),
+                        actions: <Widget>[
+                          Center(
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('Kapat'),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 },
               ),
             ),
