@@ -52,7 +52,7 @@ class TodoPage extends StatelessWidget {
                             size: 20,
                           ),
                           prefixIconConstraints:
-                              BoxConstraints(maxHeight: 20, minWidth: 25),
+                              BoxConstraints(maxHeight: 40, minWidth: 35),
                           border: InputBorder.none,
                           hintText: 'Ara',
                           hintStyle: TextStyle(color: tdGrey)),
