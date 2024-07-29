@@ -18,7 +18,10 @@ class TodoPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: backgroundColors,
         appBar: AppBar(
+          backgroundColor: backgroundColors,
+          foregroundColor: Colors.white,
           actions: [
             IconButton(
               icon: Icon(Icons.logout),
@@ -59,8 +62,18 @@ class TodoPage extends StatelessWidget {
                     ),
                   ),
                   const TabBar(
+                    labelStyle: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.indigo), // Seçili sekmenin yazı stili
+                    unselectedLabelStyle: TextStyle(
+                        fontSize: 16,
+                        color:
+                            Colors.white), // Seçili olmayan sekmenin yazı stili
                     tabs: [
-                      Tab(text: 'Tamamlanmış'),
+                      Tab(
+                        text: 'Tamamlanmış',
+                      ),
                       Tab(text: 'Tamamlanmamış'),
                     ],
                   ),
