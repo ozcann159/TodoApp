@@ -90,7 +90,35 @@ class TodoPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Get.to(() => TodoFormPage(todoId: null, isUpdate: false));
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Center(),
+                  content: Container(
+                    width: 300, // Genişlik
+                    height: 400, // Yükseklik
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: TodoFormPage(todoId: null, isUpdate: false),
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Kapat'),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
           },
           tooltip: 'Todo Ekle',
           child: Icon(Icons.add),
