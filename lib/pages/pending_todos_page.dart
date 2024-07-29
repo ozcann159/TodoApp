@@ -20,61 +20,66 @@ class PendingTodosPage extends StatelessWidget {
         itemBuilder: (context, index) {
           var todo = todos[index];
           final createdAt =
-              todo['createdAt']?.toDate(); // Timestamp'ı DateTime'a dönüştürün
+              todo['createdAt']?.toDate(); // Timestamp'ı DateTime'a dönüştür
           final formattedDate = createdAt != null
-              ? DateFormat('dd MMM yyyy')
-                  .format(createdAt) // Tarihi formatlayın
+              ? DateFormat('dd MMM yyyy').format(createdAt) // Tarihi formatla
               : 'No Date';
 
           return Dismissible(
-            key: Key(todo.id),
-            onDismissed: (direction) {
-              if (direction == DismissDirection.endToStart) {
-                todoController.deleteTodo(todo.id);
-              }
-            },
-            background: Container(
-              color: Colors.red,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Icon(Icons.delete, color: Colors.white),
+              key: Key(todo.id),
+              onDismissed: (direction) {
+                if (direction == DismissDirection.endToStart) {
+                  todoController.deleteTodo(todo.id);
+                }
+              },
+              background: Container(
+                color: Colors.red,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Icon(Icons.delete, color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-            child: Card(
-              elevation: 4,
-              margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: ListTile(
-                leading: GestureDetector(
-                  onTap: () {
-                    todoController.toggleTodoCompletion(todo.id, true);
-                  },
-                  child: todo['completed']
-                      ? Icon(Icons.check_circle, color: Colors.green)
-                      : Icon(Icons.circle_outlined),
+              child: Card(
+                elevation: 4,
+                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: ListTile(
+                  leading: GestureDetector(
+                    onTap: () {
+                      todoController.toggleTodoCompletion(todo.id, true);
+                    },
+                    child: todo['completed']
+                        ? Icon(Icons.check_circle, color: Colors.green)
+                        : Icon(Icons.circle_outlined),
+                  ),
+                  title: Text(
+                    todo['title'] ?? 'Başlık Yok',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(todo['description'] ?? 'Açıklama Yok'),
+                      Text(
+                        formattedDate,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      Get.to(
+                          () => TodoFormPage(todoId: todo.id, isUpdate: true));
+                    },
+                  ),
                 ),
-                title: Text(todo['title'] ?? 'Başlık Yok'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(todo['description'] ?? 'Açıklama Yok'),
-                    Text(
-                      formattedDate,
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ],
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    Get.to(() => TodoFormPage(todoId: todo.id, isUpdate: true));
-                  },
-                ),
-              ),
-            ),
-          );
+              ));
         },
       );
     });
