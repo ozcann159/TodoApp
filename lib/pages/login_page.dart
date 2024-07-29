@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
-        Get.offNamed('/todo-page');  // Başarılı girişten sonra yönlendirme
+        Get.offNamed('/todo-page'); // Başarılı girişten sonra yönlendirme
       } on FirebaseAuthException catch (e) {
         Get.snackbar('Error', e.message ?? 'Bir hata oluştu');
       } catch (e) {
@@ -31,46 +31,123 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Giriş Yap')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      backgroundColor: const Color(0xFF1d2630),
+      appBar: AppBar(
+        title: const Text(
+          'Giriş Yap',
+        ),
+        backgroundColor: const Color(0xFF1d2630),
+        foregroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'E-posta'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || !value.contains('@')) {
-                    return 'Geçerli bir e-posta girin';
-                  }
-                  return null;
-                },
+              const SizedBox(height: 50),
+              Text(
+                "Hoşgeldiniz",
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
-              TextFormField(
-                controller: passwordController,
-                decoration: InputDecoration(labelText: 'Şifre'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.length < 8) {
-                    return 'Şifre en az 8 karakter olmalıdır';
-                  }
-                  return null;
-                },
+              Text(
+                "Lütfen giriş yapın",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: login,
-                child: Text('Giriş Yap'),
-              ),
-              SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Get.toNamed('/register');
-                },
-                child: Text('Kayıt Ol'),
+              SizedBox(height: 30),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: emailController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: Colors.white,
+                          ),
+                          labelText: 'E-posta',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white60),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || !value.contains('@')) {
+                          return 'Geçerli bir e-posta girin';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: passwordController,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.password,
+                            color: Colors.white,
+                          ),
+                          labelText: 'Şifre',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: const BorderSide(color: Colors.white60),
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.length < 8) {
+                          return 'Şifre en az 8 karakter olmalıdır';
+                        }
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Henüz üye değil misiniz?',
+                            style: TextStyle(
+                                color: Colors.grey[400], fontSize: 14),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.toNamed('/register');
+                            },
+                            child: const Text(
+                              'Kayıt Ol',
+                              style: TextStyle(color: Colors.indigo),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    SizedBox(
+                      height: 55,
+                      width: MediaQuery.of(context).size.width / 1.5,
+                      child: ElevatedButton(
+                        onPressed: login,
+                        child: const Text(
+                          'Giriş Yap',
+                          style: TextStyle(color: Colors.indigo, fontSize: 18),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ],
           ),
