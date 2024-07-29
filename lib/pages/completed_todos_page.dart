@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart'; // intl paketini ekleyin
 import 'package:todo_task_app/pages/todo_form_page.dart';
+
 import '../controllers/todo_controller.dart';
 
 class CompletedTodosPage extends StatelessWidget {
@@ -18,9 +19,10 @@ class CompletedTodosPage extends StatelessWidget {
         itemCount: todos.length,
         itemBuilder: (context, index) {
           var todo = todos[index];
-          final createdAt = todo['createdAt']?.toDate(); // Timestamp'ı DateTime'a dönüştürün
+          final createdAt =
+              todo['createdAt']?.toDate(); // Timestamp'ı DateTime'a dönüştür
           final formattedDate = createdAt != null
-              ? DateFormat('dd MMM yyyy').format(createdAt) // Tarihi formatlayın
+              ? DateFormat('dd MMM yyyy').format(createdAt) // Tarihi formatla
               : 'No Date';
 
           return Card(
@@ -30,8 +32,8 @@ class CompletedTodosPage extends StatelessWidget {
               title: Text(
                 todo['title'] ?? 'No Title',
                 style: TextStyle(
-                  decoration: TextDecoration.lineThrough,
-                ),
+                    decoration: TextDecoration.lineThrough,
+                    fontWeight: FontWeight.bold),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +41,10 @@ class CompletedTodosPage extends StatelessWidget {
                   Text(todo['description'] ?? 'No Description'),
                   Text(
                     formattedDate,
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
