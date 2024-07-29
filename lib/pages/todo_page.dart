@@ -89,6 +89,7 @@ class TodoPage extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.indigo,
           onPressed: () {
             showDialog(
               context: context,
@@ -121,7 +122,10 @@ class TodoPage extends StatelessWidget {
             );
           },
           tooltip: 'Todo Ekle',
-          child: Icon(Icons.add),
+          child: Icon(
+            Icons.add,
+            color: Colors.white, // Icon rengin
+          ),
         ),
       ),
     );
