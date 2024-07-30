@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart'; // intl paketini ekleyin
-import 'package:todo_task_app/pages/todo_form_page.dart';
 
 import '../controllers/todo_controller.dart';
 
@@ -47,36 +46,6 @@ class CompletedTodosPage extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                 ],
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Container(
-                          width: 300, // Genişlik
-                          height: 400, // Yükseklik
-                          child: TodoFormPage(
-                            todoId: todo.id,
-                            isUpdate: true,
-                          ),
-                        ),
-                        actions: <Widget>[
-                          Center(
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Kapat'),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
               ),
             ),
           );
