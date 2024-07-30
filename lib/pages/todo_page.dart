@@ -82,9 +82,9 @@ class TodoPage extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            const CompletedTodosPage(),
+            CompletedTodosPage(),
             PendingTodosPage(),
           ],
         ),
@@ -99,7 +99,7 @@ class TodoPage extends StatelessWidget {
                   content: Container(
                     width: 300, // Genişlik
                     height: 400, // Yükseklik
-                    child: Column(
+                    child: const Column(
                       children: [
                         Expanded(
                           child: TodoFormPage(todoId: null, isUpdate: false),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -45,21 +47,21 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              Text(
+              const Text(
                 "Hoşgeldiniz",
                 style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              Text(
+              const Text(
                 "Lütfen giriş yapın",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(height: 50.0),
+              const SizedBox(height: 50.0),
               Form(
                 key: _formKey,
                 child: Column(
@@ -68,14 +70,15 @@ class _LoginPageState extends State<LoginPage> {
                       controller: emailController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.email,
                             color: Colors.white,
                           ),
                           labelText: 'E-posta',
+                          labelStyle: const TextStyle(color: Colors.white60),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white60),
+                            borderSide: const BorderSide(color: Colors.white38),
                           ),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
@@ -92,11 +95,12 @@ class _LoginPageState extends State<LoginPage> {
                       controller: passwordController,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.password,
                             color: Colors.white,
                           ),
                           labelText: 'Şifre',
+                          labelStyle: const TextStyle(color: Colors.white60),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(color: Colors.white60),

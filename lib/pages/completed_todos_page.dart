@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
+
 import '../controllers/todo_controller.dart';
 
 class CompletedTodosPage extends StatelessWidget {
@@ -13,7 +14,12 @@ class CompletedTodosPage extends StatelessWidget {
     return Obx(() {
       final todos = todoController.filteredCompletedTodos;
       if (todos.isEmpty) {
-        return const Center(child: Text('No completed todos'));
+        return const Center(
+          child: Text(
+            'No completed todos',
+            style: TextStyle(color: Colors.white),
+          ),
+        );
       }
       return ListView.builder(
         itemCount: todos.length,

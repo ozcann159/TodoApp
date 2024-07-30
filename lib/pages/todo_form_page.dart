@@ -7,7 +7,7 @@ class TodoFormPage extends StatefulWidget {
   final String? todoId;
   final bool isUpdate;
 
-  TodoFormPage({this.todoId, required this.isUpdate});
+  const TodoFormPage({super.key, this.todoId, required this.isUpdate});
 
   @override
   _TodoFormPageState createState() => _TodoFormPageState();
@@ -94,6 +94,7 @@ class _TodoFormPageState extends State<TodoFormPage> {
             key: _formKey,
             child: Column(
               children: [
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: titleController,
                   decoration: const InputDecoration(
@@ -107,7 +108,7 @@ class _TodoFormPageState extends State<TodoFormPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: descriptionController,
                   decoration: const InputDecoration(
@@ -127,9 +128,9 @@ class _TodoFormPageState extends State<TodoFormPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('Kapat'),
+                      child: const Text('Kapat'),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.indigo,

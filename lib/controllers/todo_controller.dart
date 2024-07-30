@@ -58,7 +58,7 @@ class TodoController extends GetxController {
           .collection('userTodos')
           .doc(todoId)
           .delete();
-      // fetchTodos(); // snapshots methoduyla gerek kalmıyor
+      
     }
   }
 
@@ -71,7 +71,7 @@ class TodoController extends GetxController {
           .collection('userTodos')
           .doc(todoId)
           .update({'completed': completed});
-      // fetchTodos(); // snapshots methoduyla gerek kalmıyor
+     
     }
   }
 }

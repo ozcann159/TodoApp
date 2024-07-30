@@ -6,6 +6,8 @@ import 'package:todo_task_app/pages/todo_form_page.dart';
 import '../controllers/todo_controller.dart';
 
 class PendingTodosPage extends StatelessWidget {
+  const PendingTodosPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final TodoController todoController = Get.find();
@@ -13,7 +15,11 @@ class PendingTodosPage extends StatelessWidget {
     return Obx(() {
       final todos = todoController.filteredPendingTodos;
       if (todos.isEmpty) {
-        return Center(child: Text('No pending todos'));
+        return const Center(
+            child: Text(
+          'No pending todos',
+          style: TextStyle(color: Colors.white),
+        ));
       }
       return ListView.builder(
         itemCount: todos.length,
@@ -34,29 +40,29 @@ class PendingTodosPage extends StatelessWidget {
               },
               background: Container(
                 color: Colors.red,
-                child: Align(
+                child: const Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Icon(Icons.delete, color: Colors.white),
                   ),
                 ),
               ),
               child: Card(
                 elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
                   leading: GestureDetector(
                     onTap: () {
                       todoController.toggleTodoCompletion(todo.id, true);
                     },
                     child: todo['completed']
-                        ? Icon(Icons.check_circle, color: Colors.green)
-                        : Icon(Icons.circle_outlined),
+                        ? const Icon(Icons.check_circle, color: Colors.green)
+                        : const Icon(Icons.circle_outlined),
                   ),
                   title: Text(
                     todo['title'] ?? 'Başlık Yok',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,13 +78,13 @@ class PendingTodosPage extends StatelessWidget {
                     ],
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     onPressed: () {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            content: Container(
+                            content: SizedBox(
                               width: 300, // Genişlik
                               height: 400, // Yükseklik
                               child: TodoFormPage(

@@ -7,9 +7,9 @@ Future<void> signUp(String email, String password, String name) async {
       email: email,
       password: password,
     );
-    await createUserDocument(userCredential, name); // User document creation
+    await createUserDocument(userCredential, name); 
   } catch (e) {
-    // Handle error
+    
   }
 }
 

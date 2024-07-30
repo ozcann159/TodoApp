@@ -26,7 +26,7 @@ class Todo {
       id: doc.id,
       title: data['title'] ?? '',
       description: data['description'] ?? '',
-      createdAt: TimestampConverter().fromJson(data['createdAt']),
+      createdAt: const TimestampConverter().fromJson(data['createdAt']),
     );
   }
 
@@ -34,7 +34,7 @@ class Todo {
     return {
       'title': title,
       'description': description,
-      'createdAt': TimestampConverter().toJson(createdAt),
+      'createdAt': const TimestampConverter().toJson(createdAt),
     };
   }
 
@@ -42,10 +42,10 @@ class Todo {
   Map<String, dynamic> toJson() => _$TodoToJson(this);
 
   static Timestamp _fromJsonTimestamp(Map<String, dynamic> json) {
-    return TimestampConverter().fromJson(json);
+    return const TimestampConverter().fromJson(json);
   }
 
   static Map<String, dynamic> _toJsonTimestamp(Timestamp timestamp) {
-    return TimestampConverter().toJson(timestamp);
+    return const TimestampConverter().toJson(timestamp);
   }
 }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -47,36 +49,38 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF1d2630),
       appBar: AppBar(
-        title: Text('Kayıt Ol'),
+        title: const Text('Kayıt Ol'),
         backgroundColor: const Color(0xFF1d2630),
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              SizedBox(height: 50),
-              Text(
+              const SizedBox(height: 50),
+              const Text(
                 "Giriş yapabilmek için kayıt olun.",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               ),
-              SizedBox(height: 50.0),
+              const SizedBox(height: 50.0),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
+                      style: const TextStyle(color: Colors.white), // Yazı rengi
                       controller: _nameController,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.account_circle,
                             color: Colors.white,
                           ),
                           labelText: 'İsim Soyisim',
+                          labelStyle: const TextStyle(color: Colors.white60),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(color: Colors.white60),
@@ -90,21 +94,26 @@ class _RegisterPageState extends State<RegisterPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
+                      style: const TextStyle(color: Colors.white), // Yazı rengi
                       controller: _emailController,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.email,
-                            color: Colors.white,
-                          ),
-                          labelText: 'E-posta',
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Colors.white60),
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                        prefixIcon: const Icon(
+                          Icons.email,
+                          color: Colors.white,
+                        ),
+                        labelText: 'E-posta',
+                        labelStyle: const TextStyle(color: Colors.white60),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.white60),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Email gerekli';
@@ -112,15 +121,17 @@ class _RegisterPageState extends State<RegisterPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     TextFormField(
+                      style: const TextStyle(color: Colors.white), // Yazı rengi
                       controller: _passwordController,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.password,
                             color: Colors.white,
                           ),
                           labelText: 'Şifre',
+                          labelStyle: const TextStyle(color: Colors.white60),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: const BorderSide(color: Colors.white60),
@@ -135,13 +146,13 @@ class _RegisterPageState extends State<RegisterPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     SizedBox(
                       height: 55,
                       width: MediaQuery.of(context).size.width / 1.5,
                       child: ElevatedButton(
                         onPressed: _register,
-                        child: Text(
+                        child: const Text(
                           'Kayıt Ol',
                           style: TextStyle(color: Colors.indigo, fontSize: 18),
                         ),
