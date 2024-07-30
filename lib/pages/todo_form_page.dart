@@ -72,7 +72,8 @@ class _TodoFormPageState extends State<TodoFormPage> {
         }
         Get.back();
       } catch (e) {
-        Get.snackbar('Error', e.toString(), snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar('Error', e.toString(),
+            snackPosition: SnackPosition.BOTTOM);
       }
     }
   }
@@ -81,40 +82,66 @@ class _TodoFormPageState extends State<TodoFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isUpdate ? 'Todo Güncelle' : 'Yeni Todo Ekle'),
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(widget.isUpdate ? 'Todo Güncelle' : 'Yeni Todo Ekle'),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: titleController,
-                decoration: InputDecoration(labelText: 'Başlık'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Başlık gerekli';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: descriptionController,
-                decoration: InputDecoration(labelText: 'Açıklama'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Açıklama gerekli';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveTodo,
-                child: Text(widget.isUpdate ? 'Güncelle' : 'Ekle'),
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
+                    labelText: 'Başlık',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Başlık gerekli';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(
+                      labelText: 'Açıklama', border: OutlineInputBorder()),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Açıklama gerekli';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('Kapat'),
+                    ),
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigo,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: _saveTodo,
+                      child: Text(widget.isUpdate ? 'Güncelle' : 'Ekle'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
