@@ -86,16 +86,6 @@ class PendingTodosPage extends StatelessWidget {
                                 isUpdate: true,
                               ),
                             ),
-                            actions: <Widget>[
-                              Center(
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Kapat'),
-                                ),
-                              ),
-                            ],
                           );
                         },
                       );
