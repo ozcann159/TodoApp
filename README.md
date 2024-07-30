@@ -1,16 +1,45 @@
-# todo_task_app
+# Todo Task App
 
-A new Flutter project.
+Bu proje, Flutter kullanarak geliştirilmiş bir Todo uygulamasıdır. Kullanıcılar görev ekleyebilir, güncelleyebilir, silebilir ve görevlerini tamamlanmış/ tamamlanmamış olarak işaretleyebilirler. Uygulama Firebase kullanılarak kullanıcı doğrulaması ve veritabanı yönetimi yapmaktadır.
 
-## Getting Started
+## Özellikler
 
-This project is a starting point for a Flutter application.
+- Kullanıcı kaydı ve giriş sistemi
+- Görev ekleme, güncelleme ve silme
+- Görevlerin tamamlanmış ve tamamlanmamış olarak sınıflandırılması
+- Kullanıcıya özel görev listesi
+- Firebase Authentication ve Firestore entegrasyonu
 
-A few resources to get you started if this is your first Flutter project:
+## Kurulum
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Bu proje Flutter kullanılarak geliştirilmiştir. Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları takip edebilirsiniz:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. **Gerekli bağımlılıkları yükleyin:**
+
+    ```sh
+    flutter pub get
+    ```
+
+2. **Firebase yapılandırmasını yapın:**
+
+    Firebase projenizi oluşturun ve `google-services.json` dosyasını `android/app` dizinine yerleştirin.
+
+3. **Uygulamayı çalıştırın:**
+
+    ```sh
+    flutter run
+    ```
+
+## Kullanım
+
+1. Uygulamayı çalıştırdığınızda, giriş yaparak veya yeni bir hesap oluşturarak uygulamaya giriş yapabilirsiniz.
+2. Görev eklemek için "Yeni Todo Ekle" butonuna tıklayın.
+3. Görevlerinizi düzenlemek veya silmek için ilgili görevi seçin.
+
+## Katkıda Bulunanlar
+
+- [Elif Özcan](https://github.com/elifozcan) - Proje sahibi ve geliştirici
+
+## Lisans
+
+Bu proje MIT Lisansı ile lisanslanmıştır. Ayrıntılar için [LICENSE](LICENSE) dosyasına bakabilirsiniz.
