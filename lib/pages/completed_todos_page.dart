@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; // intl paketini ekleyin
-
+import 'package:intl/intl.dart'; 
 import '../controllers/todo_controller.dart';
 
 class CompletedTodosPage extends StatelessWidget {
+  const CompletedTodosPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final TodoController todoController = Get.find();
@@ -12,7 +13,7 @@ class CompletedTodosPage extends StatelessWidget {
     return Obx(() {
       final todos = todoController.filteredCompletedTodos;
       if (todos.isEmpty) {
-        return Center(child: Text('No completed todos'));
+        return const Center(child: Text('No completed todos'));
       }
       return ListView.builder(
         itemCount: todos.length,
@@ -25,12 +26,12 @@ class CompletedTodosPage extends StatelessWidget {
               : 'No Date';
 
           return Card(
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListTile(
-              leading: Icon(Icons.check_circle, color: Colors.green),
+              leading: const Icon(Icons.check_circle, color: Colors.green),
               title: Text(
                 todo['title'] ?? 'No Title',
-                style: TextStyle(
+                style: const TextStyle(
                     decoration: TextDecoration.lineThrough,
                     fontWeight: FontWeight.bold),
               ),
