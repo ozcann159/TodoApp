@@ -24,7 +24,7 @@ class TodoPage extends StatelessWidget {
           foregroundColor: Colors.white,
           actions: [
             IconButton(
-              icon: Icon(Icons.logout),
+              icon: const Icon(Icons.logout),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 Get.offAllNamed('/login');
@@ -84,7 +84,7 @@ class TodoPage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            CompletedTodosPage(),
+            const CompletedTodosPage(),
             PendingTodosPage(),
           ],
         ),
@@ -95,7 +95,7 @@ class TodoPage extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Center(),
+                  title: const Center(),
                   content: Container(
                     width: 300, // Genişlik
                     height: 400, // Yükseklik
@@ -107,24 +107,14 @@ class TodoPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  actions: <Widget>[
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Kapat'),
-                      ),
-                    ),
-                  ],
                 );
               },
             );
           },
           tooltip: 'Todo Ekle',
-          child: Icon(
+          child: const Icon(
             Icons.add,
-            color: Colors.white, // Icon rengin
+            color: Colors.white, // Icon rengi
           ),
         ),
       ),
