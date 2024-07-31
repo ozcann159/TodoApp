@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_task_app/pages/home_page.dart';
 import 'package:todo_task_app/pages/login_page.dart';
 import 'package:todo_task_app/pages/register_page.dart';
 import 'package:todo_task_app/pages/todo_form_page.dart';
@@ -32,7 +31,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/login', page: () => const LoginPage()),
         GetPage(name: '/register', page: () => const RegisterPage()),
         GetPage(name: '/todo-page', page: () => const TodoPage()),
-        GetPage(name: '/home', page: () => const HomePage()),
         GetPage(
           name: '/todo-form',
           page: () => const TodoFormPage(todoId: null, isUpdate: false),
