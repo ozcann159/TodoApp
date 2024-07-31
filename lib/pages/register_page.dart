@@ -140,8 +140,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(10))),
                       obscureText: true,
                       validator: (value) {
-                        if (value == null || value.length < 6) {
-                          return 'Şifre en az 6 karakter olmalı';
+                        if (value == null || value.length < 8) {
+                          return 'Şifre en az 8 karakter olmalı';
                         }
                         return null;
                       },
