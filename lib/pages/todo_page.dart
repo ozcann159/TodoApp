@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_task_app/const/color.dart';
-
 import '../controllers/todo_controller.dart';
 import 'completed_todos_page.dart';
 import 'pending_todos_page.dart';
