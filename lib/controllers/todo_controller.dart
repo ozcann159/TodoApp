@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -5,17 +7,28 @@ import 'package:get/get.dart';
 class TodoController extends GetxController {
   var todos = <DocumentSnapshot>[].obs;
   var searchQuery = ''.obs;
+  StreamSubscription<QuerySnapshot>? todosSubscription;
 
   @override
   void onInit() {
     super.onInit();
-    fetchTodos();
+    _listenAuthChanges(); // Auth değişikliklerini dinlemeye başlayın
   }
 
-  void fetchTodos() {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-    if (userId != null) {
-      FirebaseFirestore.instance
+  void _listenAuthChanges() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        fetchTodos(user.uid); // Kullanıcının uid'sini iletin
+      } else {
+        todosSubscription?.cancel();
+        todos.clear(); // Kullanıcı oturumu kapalıysa todo listesini temizleyin
+      }
+    });
+  }
+
+  void fetchTodos(String userId) {
+    if (userId.isNotEmpty) {
+      todosSubscription = FirebaseFirestore.instance
           .collection('todos')
           .doc(userId)
           .collection('userTodos')
@@ -27,14 +40,28 @@ class TodoController extends GetxController {
     }
   }
 
+  @override
+  void onClose() {
+    todosSubscription?.cancel(); // Dinleyiciyi temizliyoruz
+    super.onClose();
+  }
+
   List<DocumentSnapshot> get filteredPendingTodos {
     if (searchQuery.isEmpty) {
       return todos.where((todo) => !(todo['completed'] ?? false)).toList();
     } else {
-      return todos.where((todo) =>
-          !(todo['completed'] ?? false) &&
-          (todo['description']?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
-      ).toList();
+      return todos
+          .where((todo) =>
+              !(todo['completed'] ?? false) &&
+              ((todo['title']
+                          ?.toLowerCase()
+                          .contains(searchQuery.toLowerCase()) ??
+                      false) ||
+                  (todo['description']
+                          ?.toLowerCase()
+                          .contains(searchQuery.toLowerCase()) ??
+                      false)))
+          .toList();
     }
   }
 
@@ -42,10 +69,18 @@ class TodoController extends GetxController {
     if (searchQuery.isEmpty) {
       return todos.where((todo) => todo['completed'] ?? false).toList();
     } else {
-      return todos.where((todo) =>
-          (todo['completed'] ?? false) &&
-          (todo['description']?.toLowerCase().contains(searchQuery.toLowerCase()) ?? false)
-      ).toList();
+      return todos
+          .where((todo) =>
+              (todo['completed'] ?? false) &&
+              ((todo['title']
+                          ?.toLowerCase()
+                          .contains(searchQuery.toLowerCase()) ??
+                      false) ||
+                  (todo['description']
+                          ?.toLowerCase()
+                          .contains(searchQuery.toLowerCase()) ??
+                      false)))
+          .toList();
     }
   }
 
@@ -58,7 +93,7 @@ class TodoController extends GetxController {
           .collection('userTodos')
           .doc(todoId)
           .delete();
-          fetchTodos();
+      // Todos listesine yeni veriyi almak için fetchTodos'u çağırmak yerine snapshot listener'ı dinlemeye devam et
     }
   }
 
@@ -71,7 +106,7 @@ class TodoController extends GetxController {
           .collection('userTodos')
           .doc(todoId)
           .update({'completed': completed});
-          fetchTodos();
+      // Todos listesine yeni veriyi almak için fetchTodos'u çağırmak yerine snapshot listener'ı dinlemeye devam et
     }
   }
 }

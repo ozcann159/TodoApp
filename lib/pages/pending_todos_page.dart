@@ -126,9 +126,6 @@ class PendingTodosPage extends StatelessWidget {
         backgroundColor: Colors.greenAccent,
         snackPosition: SnackPosition.BOTTOM,
       );
-    } else {
-      // Silme işlemi iptal edildiyse, listeyi tekrar yükleyin
-      Get.find<TodoController>().fetchTodos(); // Listeyi güncelle
     }
   }
 }
