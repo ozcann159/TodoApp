@@ -45,17 +45,18 @@ class TodoPage extends StatelessWidget {
                     ),
                     child: TextField(
                       decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(0),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: tdBlack,
-                            size: 20,
-                          ),
-                          prefixIconConstraints:
-                              BoxConstraints(maxHeight: 40, minWidth: 35),
-                          border: InputBorder.none,
-                          hintText: 'Ara',
-                          hintStyle: TextStyle(color: tdGrey)),
+                        contentPadding: EdgeInsets.all(0),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: tdBlack,
+                          size: 20,
+                        ),
+                        prefixIconConstraints:
+                            BoxConstraints(maxHeight: 40, minWidth: 35),
+                        border: InputBorder.none,
+                        hintText: 'Ara',
+                        hintStyle: TextStyle(color: tdGrey),
+                      ),
                       onChanged: (value) {
                         todoController.searchQuery.value = value;
                       },
@@ -63,18 +64,21 @@ class TodoPage extends StatelessWidget {
                   ),
                   const TabBar(
                     labelStyle: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.indigo), // Seçili sekmenin yazı stili
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.indigo,
+                    ),
                     unselectedLabelStyle: TextStyle(
-                        fontSize: 16,
-                        color:
-                            Colors.white), // Seçili olmayan sekmenin yazı stili
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                     tabs: [
+                      Tab(
+                        text: 'Tamamlanmamış',
+                      ),
                       Tab(
                         text: 'Tamamlanmış',
                       ),
-                      Tab(text: 'Tamamlanmamış'),
                     ],
                   ),
                 ],
@@ -84,8 +88,8 @@ class TodoPage extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
-            CompletedTodosPage(),
             PendingTodosPage(),
+            CompletedTodosPage(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
