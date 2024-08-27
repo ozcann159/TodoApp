@@ -15,9 +15,13 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
+  bool _isProcessing = false;
 
   void _register() async {
     if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        _isProcessing = true; // İşlem başlıyor
+      });
       try {
         // Firebase Authentication ile kullanıcı kaydı
         UserCredential userCredential =
@@ -151,11 +155,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       height: 55,
                       width: MediaQuery.of(context).size.width / 1.5,
                       child: ElevatedButton(
-                        onPressed: _register,
-                        child: const Text(
-                          'Kayıt Ol',
-                          style: TextStyle(color: Colors.indigo, fontSize: 18),
-                        ),
+                        onPressed: _isProcessing
+                            ? null
+                            : _register, // Butonu pasif yapma
+                        child: _isProcessing
+                            ? const CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              )
+                            : const Text(
+                                'Kayıt Ol',
+                                style: TextStyle(
+                                    color: Colors.indigo, fontSize: 18),
+                              ),
                       ),
                     ),
                   ],
