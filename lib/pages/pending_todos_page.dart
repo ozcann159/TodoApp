@@ -17,7 +17,7 @@ class PendingTodosPage extends StatelessWidget {
       if (todos.isEmpty) {
         return const Center(
             child: Text(
-          'No pending todos',
+          'Henüz tamamlanmamış not yok',
           style: TextStyle(color: Colors.white),
         ));
       }
@@ -29,55 +29,41 @@ class PendingTodosPage extends StatelessWidget {
               todo['createdAt']?.toDate(); // Timestamp'ı DateTime'a dönüştür
           final formattedDate = createdAt != null
               ? DateFormat('dd MMM yyyy').format(createdAt) // Tarihi formatla
-              : 'No Date';
+              : 'Tarih Yok';
 
-          return Dismissible(
-              key: Key(todo.id),
-              onDismissed: (direction) {
-                if (direction == DismissDirection.endToStart) {
-                  todoController.deleteTodo(todo.id);
-                }
-              },
-              background: Container(
-                color: Colors.red,
-                child: const Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Icon(Icons.delete, color: Colors.white),
-                  ),
-                ),
+          return Card(
+            elevation: 4,
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: ListTile(
+              leading: GestureDetector(
+                onTap: () {
+                  todoController.toggleTodoCompletion(todo.id, true);
+                },
+                child: todo['completed']
+                    ? const Icon(Icons.check_circle, color: Colors.green)
+                    : const Icon(Icons.circle_outlined),
               ),
-              child: Card(
-                elevation: 4,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: ListTile(
-                  leading: GestureDetector(
-                    onTap: () {
-                      todoController.toggleTodoCompletion(todo.id, true);
-                    },
-                    child: todo['completed']
-                        ? const Icon(Icons.check_circle, color: Colors.green)
-                        : const Icon(Icons.circle_outlined),
+              title: Text(
+                todo['title'] ?? 'Başlık Yok',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(todo['description'] ?? 'Açıklama Yok'),
+                  Text(
+                    formattedDate,
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold),
                   ),
-                  title: Text(
-                    todo['title'] ?? 'Başlık Yok',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(todo['description'] ?? 'Açıklama Yok'),
-                      Text(
-                        formattedDate,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  trailing: IconButton(
+                ],
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
                     icon: const Icon(Icons.edit),
                     onPressed: () {
                       showDialog(
@@ -97,10 +83,52 @@ class PendingTodosPage extends StatelessWidget {
                       );
                     },
                   ),
-                ),
-              ));
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      _showDeleteConfirmationDialog(context, todo);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
         },
       );
     });
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context, dynamic todo) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Silme Onayı'),
+        content: const Text('Bu notu silmek istediğinizden emin misiniz?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Hayır'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Evet'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldDelete ?? false) {
+      // Onay verildiyse todo'yu sil
+      await Get.find<TodoController>().deleteTodo(todo.id);
+      Get.snackbar(
+        'Başarılı',
+        'Not başarıyla silindi.',
+        backgroundColor: Colors.greenAccent,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } else {
+      // Silme işlemi iptal edildiyse, listeyi tekrar yükleyin
+      Get.find<TodoController>().fetchTodos(); // Listeyi güncelle
+    }
   }
 }

@@ -58,7 +58,7 @@ class TodoController extends GetxController {
           .collection('userTodos')
           .doc(todoId)
           .delete();
-      
+          fetchTodos();
     }
   }
 
@@ -71,7 +71,7 @@ class TodoController extends GetxController {
           .collection('userTodos')
           .doc(todoId)
           .update({'completed': completed});
-     
+          fetchTodos();
     }
   }
 }

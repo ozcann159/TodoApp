@@ -45,6 +45,18 @@ class _TodoFormPageState extends State<TodoFormPage> {
   Future<void> _saveTodo() async {
     if (_formKey.currentState!.validate()) {
       try {
+        final title = titleController.text.trim();
+        final description = descriptionController.text.trim();
+        if (title.isEmpty) {
+          Get.snackbar('Hata', 'Başlık boş olamaz!',
+              snackPosition: SnackPosition.BOTTOM);
+          return;
+        }
+         if (description.isEmpty) {
+          Get.snackbar('Hata', 'Açıklama boş olamaz!',
+              snackPosition: SnackPosition.BOTTOM);
+          return;
+        }
         if (widget.isUpdate && widget.todoId != null) {
           // Todo güncelle
           await FirebaseFirestore.instance
@@ -72,7 +84,7 @@ class _TodoFormPageState extends State<TodoFormPage> {
         }
         Get.back();
       } catch (e) {
-        Get.snackbar('Error', e.toString(),
+        Get.snackbar('Hata', e.toString(),
             snackPosition: SnackPosition.BOTTOM);
       }
     }
