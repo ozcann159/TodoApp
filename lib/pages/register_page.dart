@@ -79,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Icons.account_circle,
                             color: Colors.white,
                           ),
-                          labelText: 'İsim Soyisim',
+                          labelText: 'Ad Soyad',
                           labelStyle: const TextStyle(color: Colors.white60),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -89,7 +89,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               borderRadius: BorderRadius.circular(10))),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'İsim soyisim gerekli';
+                          return 'Ad soyad gerekli';
                         }
                         return null;
                       },
