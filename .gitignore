@@ -43,3 +43,37 @@ app.*.map.json
 /android/app/release
 "android/app/build/outputs/apk/debug/app-debug.apk" 
 android/app/build/outputs/apk/*'.gradle/' 
+# Gradle wrapper
+gradlew
+gradle/
+
+# Dart ve Flutter
+pubspec.lock
+.dart_tool/
+
+# Diğer
+*.properties
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+
+# Gradle Build Klasörü
+.gradle/
+build/
+
+# Android Özel Dosyalar
+android\app\build.gradle
+android\settings.gradle
+
+# Gradle Wrapper dosyaları
+android/gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+
+# Gradle Build Klasörleri ve Dosyaları
+android/.gradle/
+android/build/
+
+# Android Projeye Özel Dosyalar
+android/app/build.gradle
+android/settings.gradle
