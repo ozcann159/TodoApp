@@ -1,14 +1,16 @@
-# Todo Task App
+# TodoApp
 
 Bu proje, Flutter kullanarak geliştirilmiş bir Todo uygulamasıdır. Kullanıcılar görev ekleyebilir, güncelleyebilir, silebilir ve görevlerini tamamlanmış/ tamamlanmamış olarak işaretleyebilirler. Uygulama Firebase kullanılarak kullanıcı doğrulaması ve veritabanı yönetimi yapmaktadır.
 
 ## Özellikler
 
-- Kullanıcı kaydı ve giriş sistemi
-- Görev ekleme, güncelleme ve silme
-- Görevlerin tamamlanmış ve tamamlanmamış olarak sınıflandırılması
-- Kullanıcıya özel görev listesi
-- Firebase Authentication ve Firestore entegrasyonu
+- Görev Ekleme: Kullanıcılar kolayca yeni görevler ekleyebilir.
+- Görev Düzenleme: Eklenen görevleri düzenleme ve güncelleme.
+- Görev Silme: Tamamlanan veya gereksiz görevleri silme.
+- Görevler İçin Etiketleme: Görevleri kategorize ederek daha iyi organize etme.
+- Arama Özelliği: Görevler arasında hızlıca arama yapma.
+- Kullanıcı Dostu Arayüz: Basit ve anlaşılır bir kullanıcı deneyimi.
+- Veri Senkronizasyonu: Tüm görevlerinizi bulutta saklama ve senkronize etme.
 
 ## Kurulum
 
@@ -29,6 +31,22 @@ Bu proje Flutter kullanılarak geliştirilmiştir. Projeyi kendi bilgisayarını
     ```sh
     flutter run
     ```
+
+## Ekran Görüntüleri
+### Giriş Ekranı
+![Ana Ekran](https://github.com/ozcann159/TodoApp/blob/main/assets/images/1.png )
+*Giriş ekranı, kullanıcıların uygulamaya kolayca giriş yapmasını sağlar.*
+### Kayıt Ekranı
+![Kayıt Ekranı](https://github.com/ozcann159/TodoApp/blob/main/assets/images/2.png)
+*Yeni kullanıcıların hesap oluşturmasına olanak tanır.*
+### Görev Ekleme
+![Görev Ekleme](https://github.com/ozcann159/TodoApp/blob/main/assets/images/4.png)
+*Yeni görev ekleyin ve işlerinizi düzenleyin.*
+### Todo Listesi
+![Görev Detayı](https://github.com/ozcann159/TodoApp/blob/main/assets/images/3.png)
+*Todoların tamamlanmış ya da tamamlanmamış olarak listelenmesi*
+
+
 
 ## Kullanım
 
